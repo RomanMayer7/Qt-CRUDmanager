@@ -1,4 +1,5 @@
 #include "dbRepository.h"
+#include <QMessageBox>
 
 
 DbRepository::DbRepository(QObject *parent):QObject (parent){}
@@ -9,7 +10,7 @@ bool DbRepository::OpenDBConnection()
 
     qDebug()<<"Initializing our DB";
     myDB=QSqlDatabase::addDatabase("QSQLITE");
-    myDB.setDatabaseName("myDemoDB.db");
+    myDB.setDatabaseName(QCoreApplication::applicationDirPath() + "/myDemoDB.db");
 
     if(!myDB.open())
     {
@@ -18,6 +19,8 @@ bool DbRepository::OpenDBConnection()
     }
     else
     {
+
+        qDebug()<<("Yay! Your database host is "+myDB.hostName()+" .\n"+" The name of the database is "+myDB.databaseName()+".");
         qDebug()<<("Connected to DB Successfully");
         return true;
     }
@@ -40,15 +43,20 @@ bool DbRepository::LoginToApplication(QString username,QString password)
     }
     QString sql="SELECT * FROM Users WHERE Username='"+username+"' AND Password='"+password+"'";
     QSqlQuery queryReader;
-    queryReader.prepare(sql);
-    queryReader.exec();
+   // queryReader.prepare(sql);
+    bool success=queryReader.exec(sql);
+
+    if(!success)
+    {
+        qDebug()<<(queryReader.lastError());
+    }
 
        int count=0;
        while(queryReader.next())
        {
            count++;
        }
-        if(count>1)
+        if(count>0)
         {
            CloseDBConnection();
            return true;

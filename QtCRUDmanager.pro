@@ -16,16 +16,23 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
+LIBS += -lKernel32
+LIBS +="C:\Windows\System32\gdi32.dll"
+
 SOURCES += \
+    KeyPress.cpp \
     dbRepository.cpp \
     loginWindow.cpp \
     main.cpp \
-    mainWindow.cpp
+    mainWindow.cpp \
+    winapiwrapper.cpp
 
 HEADERS += \
+    KeyPress.h \
     dbRepository.h \
     loginWindow.h \
-    mainWindow.h
+    mainWindow.h \
+    winapiwrapper.h
 
 FORMS += \
     loginWindow.ui \

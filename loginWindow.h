@@ -16,6 +16,9 @@ class LoginWindow : public QMainWindow
 public:
      LoginWindow(QWidget *parent = nullptr);
      ~LoginWindow();
+     void Login();
+     void keyPressEvent(QKeyEvent *event);
+     // bool eventFilter(QObject *target, QEvent *event);
 private slots:
      void on_loginButton_clicked();
 

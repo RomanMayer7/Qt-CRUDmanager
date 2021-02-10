@@ -15,6 +15,9 @@ public:
     bool OpenDBConnection();
     void CloseDBConnection();
     bool LoginToApplication(QString username,QString password);
+    QSqlQueryModel* GetAllGameRecords();
+    QSqlQueryModel* GetAllGenreRecords();
+    void AddGameRecord(QString _title,QString _publisher,int _genre,QString _year);
 
 };
 

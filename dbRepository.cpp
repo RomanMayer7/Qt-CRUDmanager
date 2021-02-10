@@ -65,3 +65,66 @@ bool DbRepository::LoginToApplication(QString username,QString password)
      CloseDBConnection();
      return false;
 }
+
+QSqlQueryModel* DbRepository::GetAllGameRecords()
+{
+    OpenDBConnection();
+
+    if(!myDB.isOpen())
+    {
+        qDebug()<<("Failed to Open Connection");
+        return NULL;
+
+    }
+    else
+    {
+        QSqlQueryModel * model =new  QSqlQueryModel ();
+        QSqlQuery* query =new   QSqlQuery(myDB);
+      //  query->prepare("SELECT * FROM Games");
+        query->exec("SELECT Games.Title,Games.Publisher,Games.Year,Genres.Genre FROM Games JOIN Genres ON Games.Genre=Genres.ID");
+        model->setQuery(*query);
+
+         qDebug()<<(model->rowCount());
+
+        return model;
+    }
+}
+
+QSqlQueryModel* DbRepository::GetAllGenreRecords()
+{
+    OpenDBConnection();
+
+    if(!myDB.isOpen())
+    {
+        qDebug()<<("Failed to Open Connection");
+        return NULL;
+
+    }
+    else
+    {
+        QSqlQueryModel * model =new  QSqlQueryModel ();
+        QSqlQuery* query =new   QSqlQuery(myDB);
+      //  query->prepare("SELECT * FROM Games");
+        query->exec("SELECT Genre FROM Genres ORDER BY Id");
+        model->setQuery(*query);
+
+         qDebug()<<(model->rowCount());
+
+        return model;
+    }
+}
+
+void DbRepository::AddGameRecord(QString _title,QString _publisher,int _genre,QString _year)
+{
+    OpenDBConnection();
+
+    if(!myDB.isOpen())
+    {
+        qDebug()<<("Failed to Open Connection in AddGameRecord()");
+
+    }
+    QSqlQuery* query = new  QSqlQuery(myDB);
+    QString sql="INSERT INTO Games(Title,Publisher,Genre,Year) VALUES('"+_title+"','"+_publisher+"','"+QString::number(_genre+1)+"','"+_year+"')";
+    query->exec(sql);
+
+}
